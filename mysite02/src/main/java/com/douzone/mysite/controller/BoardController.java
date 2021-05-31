@@ -7,22 +7,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.douzone.mysite.web.user.UserActionFactory;
+import com.douzone.mysite.web.board.BoardActionFactory;
 import com.douzone.web.Action;
 
-public class UserController extends HttpServlet {
+public class BoardController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// EncodingFilter 대체
-		// request.setCharacterEncoding("UTF-8");
 		String actionName = request.getParameter("a");
-		
-		Action action = new UserActionFactory().getAction(actionName);
+
+		Action action = new BoardActionFactory().getAction(actionName);
 		action.execute(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
+
 }

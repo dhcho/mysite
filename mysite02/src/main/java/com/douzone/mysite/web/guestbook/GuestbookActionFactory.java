@@ -1,7 +1,7 @@
-package com.douzone.mysite.mvc.guestbook;
+package com.douzone.mysite.web.guestbook;
 
-import com.douzone.mvc.Action;
-import com.douzone.mvc.ActionFactory;
+import com.douzone.web.Action;
+import com.douzone.web.ActionFactory;
 
 public class GuestbookActionFactory extends ActionFactory {
 
@@ -15,7 +15,7 @@ public class GuestbookActionFactory extends ActionFactory {
 		} else if("delete".equals(actionName)) {
 			action = new DeleteAddAction();
 		} else {
-			action = new IndexAction();
+			action = new ListAction();
 		}
 		return action;
 	}
