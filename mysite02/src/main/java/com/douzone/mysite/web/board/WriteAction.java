@@ -27,7 +27,7 @@ public class WriteAction implements Action {
 		
 		new BoardRepository().insert(vo);
 		
-		MvcUtils.forward("board/list", request, response);
+		MvcUtils.redirect(request.getContextPath() + "/board", request, response);
 	}
 
 }

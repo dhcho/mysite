@@ -27,7 +27,7 @@ public class UpdateFormAction implements Action {
 			return;
 		}
 		
-		Long userNo = authUser.getNo();
+		// Long userNo = authUser.getNo();
 		// UserVo userVo = new UserRepository.findByNo(userNo); // userVo를 request에 담아서
 		// request.setAttribute("userVo", userVo); // 패스워드는 받아오지 않음
 		

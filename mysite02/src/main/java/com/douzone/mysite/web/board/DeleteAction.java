@@ -11,22 +11,23 @@ import com.douzone.mysite.vo.BoardVo;
 import com.douzone.web.Action;
 import com.douzone.web.util.MvcUtils;
 
-public class ViewAction implements Action {
+public class DeleteAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//1. 요청처리
-		int index = Integer.parseInt(request.getParameter("no"));
-
-		BoardVo listDetail = new BoardRepository().findView(index);
+		String strNo = request.getParameter("no");
+		Long no = Long.parseLong(strNo);
+		String strUserNo = request.getParameter("userNo");
+		Long userNo = Long.parseLong(strUserNo);
 		
-		// 조회수 update
-		Boolean hit = new BoardRepository().updateHit(index);
-
-		//2. request범위에 데이터(객체) 저장
-		request.setAttribute("listDetail", listDetail);
-
-		MvcUtils.forward("board/view", request, response);
+		BoardVo vo = new BoardVo();
+		vo.setNo(no);
+		vo.setUserNo(userNo);
+		
+		new BoardRepository().delete(vo);
+		
+		// 2. redirect 응답 
+		MvcUtils.redirect(request.getContextPath() + "/board", request, response);
 	}
-
 }

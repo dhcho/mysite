@@ -27,10 +27,23 @@ public class ListAction implements Action {
 		// request.setAttribute("pageInfo", map);
 		
 		//1. 요청처리
-		List<BoardVo> list = new BoardRepository().findAll();
+		int count = new BoardRepository().selectCnt();
+		String tempStart = request.getParameter("page");
+		
+		int startPage = 0;
+		int onePageCnt = 10;
+		
+		count = (int)Math.ceil((double)count/(double)onePageCnt);
+		
+		if(tempStart != null) {
+			startPage = (Integer.parseInt(tempStart)-1) * onePageCnt;
+		}
+		
+		List<BoardVo> list = new BoardRepository().selectPage(startPage, onePageCnt);
 				
 		//2. request범위에 데이터(객체) 저장
 		request.setAttribute("list", list);
+		request.setAttribute("count", count);
 		
 		MvcUtils.forward("board/list", request, response);
 	}
