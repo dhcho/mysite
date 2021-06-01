@@ -29,6 +29,7 @@ public class ListAction implements Action {
 		//1. 요청처리
 		int count = new BoardRepository().selectCnt();
 		String tempStart = request.getParameter("page");
+		String kwd = request.getParameter("kwd");
 		
 		int startPage = 0;
 		int onePageCnt = 10;
@@ -39,7 +40,7 @@ public class ListAction implements Action {
 			startPage = (Integer.parseInt(tempStart)-1) * onePageCnt;
 		}
 		
-		List<BoardVo> list = new BoardRepository().selectPage(startPage, onePageCnt);
+		List<BoardVo> list = new BoardRepository().selectPage(startPage, onePageCnt, kwd);
 				
 		//2. request범위에 데이터(객체) 저장
 		request.setAttribute("list", list);

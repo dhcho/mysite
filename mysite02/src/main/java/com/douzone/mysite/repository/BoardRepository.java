@@ -63,7 +63,7 @@ public class BoardRepository {
 					"   select a.no, a.title, a.depth, a.hit, b.no as userNo, b.name, a.reg_date" +
 					"     from board a, user b" +
 					"	 where a.user_no = b.no" +
-					" order by a.no asc";
+					" order by a.no desc";
 
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
@@ -204,12 +204,17 @@ public class BoardRepository {
 		return result;
 	}
 	
-	public List<BoardVo> selectPage(int start, int pageCnt) {
+	public List<BoardVo> selectPage(int start, int pageCnt, String kwd) {
 		List<BoardVo> result = new ArrayList<>();
 
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+		if(kwd != null) {
+			kwd = '%' + kwd + '%';
+		} else {
+			kwd = "%";
+		}
 		
 		try {
 			conn = getConnection();
@@ -218,12 +223,16 @@ public class BoardRepository {
 					"   select a.no, a.title, a.depth, a.hit, b.no as userNo, b.name, a.reg_date" +
 					"     from board a, user b" +
 					"	 where a.user_no = b.no" +
-					" order by a.no asc" +
+					"  	   and a.title like ?" +
+					" order by a.no desc" +
 					" limit ?, ?";
 
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, start);
-			pstmt.setInt(2, pageCnt);
+
+			pstmt.setString(1, kwd);
+			pstmt.setInt(2, start);
+			pstmt.setInt(3, pageCnt);
+			
 			rs = pstmt.executeQuery();
 
 			while(rs.next()) {

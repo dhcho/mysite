@@ -15,9 +15,9 @@
 		<c:import url="/WEB-INF/views/includes/header.jsp" />
 		<div id="content">
 			<div id="board">
-				<form id="search_form" action="" method="post">
-					<input type="text" id="kwd" name="kwd" value=""> <input
-						type="submit" value="찾기">
+				<form id="search_form" action="${pageContext.request.contextPath }/board" method="post">
+					<input type="text" id="kwd" name="kwd" value=""> 
+					<input type="submit" value="찾기">
 				</form>
 				<table class="tbl-ex">
 					<tr>
@@ -51,11 +51,11 @@
 				<c:set var="count" value="${count }" />
 				<div class="pager">
 					<ul>
-						<li><a href="">◀</a></li>
+						<li><a href="${pageContext.request.contextPath }/board?page=1">◀</a></li>
 						<c:forEach begin="1" end="${count }" step="1" varStatus="status">
 							<li><a href="${pageContext.request.contextPath }/board?page=${status.index }">${status.index }</a></li>
 						</c:forEach>
-						<li><a href="">▶</a></li>
+						<li><a href="${pageContext.request.contextPath }/board?page=${ count}">▶</a></li>
 					</ul>
 				</div>
 
@@ -64,7 +64,7 @@
 					</c:when>
 					<c:otherwise>
 						<div class="bottom">
-							<a href="${pageContext.request.contextPath }/board?a=writeform&userNo=1" id="new-book">글쓰기</a>
+							<a href="${pageContext.request.contextPath }/board?a=writeform&userNo=${authUser.no }" id="new-book">글쓰기</a>
 						</div>
 					</c:otherwise>
 				</c:choose>
