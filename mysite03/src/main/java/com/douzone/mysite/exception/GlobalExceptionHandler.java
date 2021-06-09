@@ -28,6 +28,7 @@ public class GlobalExceptionHandler {
 		 * 2. logger - com.douzone.mysite.exception, level(error), (console+file) appender
 		 *    logger - Root, level(debug), console appender
 		 */
+		
 		LOGGER.error(errors.toString());
 		// 2. 사과 페이지
 		// 3. 정상 종료

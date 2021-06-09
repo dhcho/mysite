@@ -19,10 +19,6 @@ public class BoardRepository {
 			
 		return count == 1;
 	}
-
-	public List<BoardVo> findAll() {
-		return sqlSession.selectList("board.findAll");
-	}
 	
 	public BoardVo findView(int index) {
 		return sqlSession.selectOne("board.findByNo", index);
