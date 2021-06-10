@@ -24,9 +24,11 @@
 	</select>
 	
 	<select id="findCnt" resultType="int">
-		<![CDATA[	
-		  select count(*) from board
-	  	]]>	
+		  select count(*) 
+		  	from board
+		  <if test="kwd != null and kwd != '' ">
+			where title like CONCAT('%',#{kwd},'%')
+		  </if>
 	</select>
 	
 	<select id="findPage" resultType="boardvo">
@@ -34,7 +36,7 @@
 					     from board a, user b
 						 where a.user_no = b.no
 						 <if test="kwd != null and kwd != '' ">
-						   and a.title like #{kwd }
+						   and a.title like CONCAT('%',#{kwd},'%')
 						 </if>
 					 order by a.no desc
 					 limit #{startPage }, #{onePageCnt }

@@ -23,7 +23,8 @@ public class BoardController{
 	
 	@RequestMapping("")
 	public String list(Model model) {
-		int count = boardService.getBoardCount();
+		String kwd = "";
+		int count = boardService.getBoardCount(kwd);
 		int onePageCnt = 10;
 		String startPage = "1";
 		List<BoardVo> list = boardService.getBoardSelectList(startPage, "");
@@ -37,9 +38,24 @@ public class BoardController{
 	
 	@RequestMapping("/list/{pageNo}")
 	public String list(@PathVariable("pageNo") String pageNo, Model model) {
-		int count = boardService.getBoardCount();
+		String kwd = "";
+		int count = boardService.getBoardCount(kwd);
 		int onePageCnt = 10;
 		List<BoardVo> list = boardService.getBoardSelectList(pageNo, "");
+		
+		count = (int)Math.ceil((double)count/(double)onePageCnt);
+		model.addAttribute("count", count);
+		model.addAttribute("list", list);
+		
+		return "board/list";
+	}
+	
+	@RequestMapping("/listFind")
+	public String listFind(@RequestParam("kwd") String kwd, Model model) {
+		int count = boardService.getBoardCount(kwd);
+		int onePageCnt = 10;
+		String pageNo = "1";
+		List<BoardVo> list = boardService.getBoardSelectList(pageNo, kwd);
 		
 		count = (int)Math.ceil((double)count/(double)onePageCnt);
 		model.addAttribute("count", count);

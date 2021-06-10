@@ -24,17 +24,20 @@ public class BoardRepository {
 		return sqlSession.selectOne("board.findByNo", index);
 	}
 	
-	public int selectCnt() {
-		return sqlSession.selectOne("board.findCnt");
+	public int selectCnt(String kwd) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("kwd", kwd);
+		
+		return sqlSession.selectOne("board.findCnt", params);
 	}
 	
 	public List<BoardVo> selectPage(int startPage, int onePageCnt, String kwd) {
-		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("startPage", startPage);
-		parameters.put("onePageCnt", onePageCnt);
-		parameters.put("kwd", kwd);
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("startPage", startPage);
+		params.put("onePageCnt", onePageCnt);
+		params.put("kwd", kwd);
 
-		return sqlSession.selectList("board.findPage", parameters);
+		return sqlSession.selectList("board.findPage", params);
 	}
 	
 	public Boolean update(BoardVo vo) {

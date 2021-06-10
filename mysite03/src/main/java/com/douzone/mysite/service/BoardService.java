@@ -30,8 +30,8 @@ public class BoardService {
 		return list;
 	}
 	
-	public int getBoardCount() {
-		return boardRepository.selectCnt();
+	public int getBoardCount(String kwd) {
+		return boardRepository.selectCnt(kwd);
 	}
 	
 	public BoardVo getBoardView(int index) {
