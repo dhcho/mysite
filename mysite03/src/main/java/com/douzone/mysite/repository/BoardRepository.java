@@ -24,14 +24,14 @@ public class BoardRepository {
 		return sqlSession.selectOne("board.findByNo", index);
 	}
 	
-	public int selectCnt(String kwd) {
+	public int findCnt(String kwd) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("kwd", kwd);
 		
 		return sqlSession.selectOne("board.findCnt", params);
 	}
 	
-	public List<BoardVo> selectPage(int startPage, int onePageCnt, String kwd) {
+	public List<BoardVo> findPage(int startPage, int onePageCnt, String kwd) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("startPage", startPage);
 		params.put("onePageCnt", onePageCnt);

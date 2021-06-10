@@ -25,13 +25,13 @@ public class BoardService {
 			startPage = (Integer.parseInt(page)-1) * onePageCnt;
 		}
 		
-		List<BoardVo> list = boardRepository.selectPage(startPage, onePageCnt, kwd);
+		List<BoardVo> list = boardRepository.findPage(startPage, onePageCnt, kwd);
 		
 		return list;
 	}
 	
 	public int getBoardCount(String kwd) {
-		return boardRepository.selectCnt(kwd);
+		return boardRepository.findCnt(kwd);
 	}
 	
 	public BoardVo getBoardView(int index) {
