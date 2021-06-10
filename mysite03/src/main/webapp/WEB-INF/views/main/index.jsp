@@ -9,6 +9,18 @@
 <title value="${title }"></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link href="${pageContext.request.contextPath }/assets/css/main.css" rel="stylesheet" type="text/css">
+<script>
+myObj = {
+		"no":1,
+		"name":"조대헌",
+		"email":"oop6413@gmail.com",
+		"password":null,
+		"gender":null,
+		"role":null
+	}
+	
+console.log(myObj.no);
+</script>
 </head>
 <body>
 	<div id="container">
