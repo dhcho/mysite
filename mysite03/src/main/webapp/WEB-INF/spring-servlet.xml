@@ -75,7 +75,16 @@
 		<!-- defaultEncoding -->
 		<property name="defaultEncoding" value="utf-8" />
 	</bean>
-
+	
+	<!-- 6. MessageSource -->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+	   <property name="basenames">
+	      <list>
+			<value>messages/messages_ko</value>
+	      </list>
+	   </property>
+	</bean>
+	
 	<!-- mvc resources mapping -->
 	<mvc:resources location="file:/uploads-mysite/" mapping="/images/**" />
 
