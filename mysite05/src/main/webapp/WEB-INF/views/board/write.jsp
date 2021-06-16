@@ -14,10 +14,10 @@
 		<jsp:include page="/WEB-INF/views/includes/header.jsp" />
 		<div id="content">
 			<div id="board">
-				<form class="board-form" method="post" action="${pageContext.request.contextPath }/board/writeReply">
+				<form class="board-form" method="post" action="${pageContext.request.contextPath }/board/write?userNo=${param.userNo }">
 					<table class="tbl-ex">
 						<tr>
-							<th colspan="2">답글쓰기</th>
+							<th colspan="2">글쓰기</th>
 						</tr>
 						<tr>
 							<td class="label">제목</td>
