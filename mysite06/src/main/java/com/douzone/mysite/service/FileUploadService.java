@@ -15,8 +15,8 @@ import com.douzone.mysite.exception.GlobalExceptionHandler;
 @Service
 public class FileUploadService {
 	private static final Log LOGGER = LogFactory.getLog(GlobalExceptionHandler.class);
-	private static final String SAVE_PATH = "/uploads-mysite";
-	private static final String URL_BASE = "/images";
+	private static final String SAVE_PATH = "/uploads-mysite/";
+	private static final String URL_BASE = "/images/";
 	public String restore(MultipartFile file) {
 		String url = null;
 		
