@@ -22,6 +22,11 @@ public class MainController {
 	@RequestMapping("")
 	public String index(Model model) {
 		SiteVo vo = siteService.getSite();
+		
+		if(vo == null) {
+			vo = new SiteVo();
+		}
+		
 		model.addAttribute("vo", vo);
 		application.setAttribute("title", vo.getTitle());
 		return "main/index";

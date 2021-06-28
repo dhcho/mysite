@@ -12,7 +12,7 @@ public class SiteRepository {
 	private SqlSession sqlSession;
 
 	public SiteVo find() {
-		return sqlSession.selectOne("site.findOne");
+		return sqlSession.selectOne("site.find");
 	}
 	
 	public void update(SiteVo vo) {

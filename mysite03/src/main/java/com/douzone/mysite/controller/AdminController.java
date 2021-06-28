@@ -31,12 +31,19 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value="/main/update", method=RequestMethod.POST)
-	public String updateMain(SiteVo vo, @RequestParam("file") MultipartFile file) {
+	public String updateMain(SiteVo vo, 
+			@RequestParam("title") String title,
+			@RequestParam("welcome") String welcome,
+			@RequestParam("file") MultipartFile file,
+			@RequestParam("description") String description) {
 		String profile = fileUploadService.restore(file);
+		vo.setTitle(title);
+		vo.setWelcome(welcome);
 		vo.setProfile(profile);
+		vo.setDescription(description);
 		
 		siteService.updateSite(vo);
-		return "redirect:/admin";
+		return "redirect:/";
 	}
 	
 	@RequestMapping("/guestbook")
