@@ -17,6 +17,10 @@ public class BoardService {
 		boardRepository.insert(vo);
 	}
 	
+	public void addBoardReply(BoardVo vo) {
+		boardRepository.insertReply(vo);
+	}
+	
 	public List<BoardVo> getBoardSelectList(String page, String kwd) {
 		int startPage = 0;
 		int onePageCnt = 10;

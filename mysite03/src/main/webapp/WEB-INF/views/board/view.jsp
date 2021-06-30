@@ -34,13 +34,13 @@
 					</tr>
 				</table>
 				<div class="bottom">
-					<a href="${pageContext.request.contextPath }/board/reply/${listDetail.no }">답글달기</a>
 					<a href="${pageContext.request.contextPath }/board">글목록</a>
 				<c:choose>
 					<c:when test="${empty authUser }">
 					</c:when>
 					<c:otherwise>
 						<a href="${pageContext.request.contextPath }/board/modify/${listDetail.no }">글수정</a>
+						<a href="${pageContext.request.contextPath }/board/writereply/${listDetail.groupNo }">답글달기</a>
 					</c:otherwise>
 				</c:choose>
 				</div>

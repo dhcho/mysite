@@ -2,16 +2,49 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="board">
 	<insert id="insert" parameterType="boardvo">
-		<![CDATA[
-		insert
-				   into board(title, contents, reg_date, hit, group_no, order_no, depth, user_no)
-				 values (#{title }, #{contents }, now(), 0, 0, 0, 0, #{userNo })
-	  	]]>
-	  	<selectKey keyProperty="no" resultType="long" order="AFTER">
-			<![CDATA[
-		  	select last_insert_id()
-	  		]]>
-	  	</selectKey>	
+	  	
+		INSERT
+			INTO board
+			(
+				no,
+				title, 
+				contents, 
+				reg_date, 
+				hit, 
+				group_no,
+				order_no, 
+				depth, 
+				user_no)
+		VALUES (
+			(SELECT MAX(no)+1 FROM board A)
+			#{title }, 
+			#{contents }, 
+			now(), 
+			0, 
+			(SELECT MAX(no)+1 FROM board A)
+			0, 
+			0, 
+			#{userNo })
+	</insert>
+	
+	<insert id="insertReply" parameterType="boardvo">
+		INSERT
+			INTO board(title, 
+				contents, 
+				reg_date, 
+				hit, 
+				group_no, 
+				order_no, 
+				depth, 
+				user_no)
+			VALUES (#{title }, 
+				#{contents }, 
+				now(), 
+				0, 
+				#{groupNo }, 
+				(SELECT order_no+1 FROM board A WHERE no = #{groupNo}), 
+				(SELECT depth+1 FROM board A WHERE no = #{groupNo}), 
+				#{userNo })
 	</insert>
 
 	<select id="findAll" resultType="boardvo">
@@ -34,11 +67,10 @@
 	<select id="findPage" resultType="boardvo">
 		  select a.no,
 		  		 a.title,
-		   		 a.depth,
 		   		 a.hit, 
 		   		 b.no as userNo, 
 		   		 b.name as userName, 
-		   		 a.reg_date as regDate,
+		   		 DATE_FORMAT(a.reg_date,'%Y년%m월%d일 %H시%i분%S초') as regDate,
 		   		 a.group_no,
 		   		 a.order_no,
 		   		 a.depth
@@ -47,20 +79,20 @@
 			<if test="kwd != null and kwd != '' ">
 				and a.title like CONCAT('%',#{kwd},'%')
 			</if>
-			order by a.no desc
+			order by a.group_no DESC, a.order_no ASC
 			limit #{startPage }, #{onePageCnt }
 	</select>
 	
-	<select id="findByNo" parameterType="long" resultType="boardvo">
+	<select id="findByNo" parameterType="int" resultType="boardvo">
 		select no, 
 			title, 
 			contents, 
 			depth, 
 			hit, 
-			group_no,
-			order_no,
+			group_no as groupNo,
+			order_no as orderNo,
 			depth,
-			reg_date
+			reg_date as regDate
 		from board
 		where no = #{no }
 	</select>

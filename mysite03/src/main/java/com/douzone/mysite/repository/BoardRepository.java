@@ -14,9 +14,16 @@ import com.douzone.mysite.vo.BoardVo;
 public class BoardRepository {
 	@Autowired
 	private SqlSession sqlSession;
+	
 	public Boolean insert(BoardVo vo) {
 		int count = sqlSession.insert("board.insert", vo);
 			
+		return count == 1;
+	}
+	
+	public Boolean insertReply(BoardVo vo) {
+		int count = sqlSession.insert("board.insertReply", vo);
+		
 		return count == 1;
 	}
 	

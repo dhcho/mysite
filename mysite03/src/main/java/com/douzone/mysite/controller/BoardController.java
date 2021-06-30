@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -86,6 +87,29 @@ public class BoardController{
 		vo.setTitle(title);
 		vo.setContents(contents);
 		boardService.addBoard(vo);
+		return "redirect:/board/";
+	}
+	
+	@RequestMapping(value="/writereply/{groupNo}", method=RequestMethod.GET)
+	public String addReply(Model model,
+			@PathVariable("groupNo") int groupNo) {
+		model.addAttribute("groupNo", groupNo);
+		return "board/writereply";
+	}
+	
+	@RequestMapping(value="/writereply", method=RequestMethod.POST)
+	public String addReply(@AuthUser UserVo authUser, 
+			@RequestParam("title") String title,
+			@RequestParam("content") String contents, 
+			@RequestParam("groupNo") int groupNo,
+			@ModelAttribute BoardVo vo) {
+		Long longNo = (long)groupNo;
+		vo.setUserNo(authUser.getNo());
+		vo.setNo(longNo);
+		vo.setTitle(title);
+		vo.setContents(contents);
+		vo.setGroupNo(groupNo);
+		boardService.addBoardReply(vo);
 		return "redirect:/board/";
 	}
 	

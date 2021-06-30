@@ -32,7 +32,19 @@
 					<c:forEach items="${list }" var="vo" varStatus="status">
 						<tr>
 							<td>${size-status.index }</td>
-							<td style="text-align: left"><a href="${pageContext.request.contextPath }/board/view/${vo.no }">${vo.title }</a></td>
+							<c:choose>
+								<c:when test="${vo.depth > 0 }">
+									<td class="left" style="text-align:left; padding-left:${20*vo.depth }px">
+										<img src="${pageContext.request.contextPath }/assets/images/reply.png">
+										<a href="${pageContext.request.contextPath }/board/view/${vo.no }">${vo.title }</a>
+									</td>
+								</c:when>
+								<c:otherwise>
+									<td class="left" style="text-align:left">
+										<a href="${pageContext.request.contextPath }/board/view/${vo.no }">${vo.title }</a>
+									</td>
+								</c:otherwise>
+							</c:choose>
 							<td>${vo.userName }</td>
 							<td>${vo.hit }</td>
 							<td>${vo.regDate }</td>
