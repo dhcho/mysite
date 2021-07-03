@@ -16,12 +16,12 @@
 				depth, 
 				user_no)
 		VALUES (
-			(SELECT MAX(no)+1 FROM board A)
+			(SELECT MAX(no)+1 FROM board A),
 			#{title }, 
 			#{contents }, 
 			now(), 
 			0, 
-			(SELECT MAX(no)+1 FROM board A)
+			(SELECT MAX(no)+1 FROM board A),
 			0, 
 			0, 
 			#{userNo })
