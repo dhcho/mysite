@@ -14,7 +14,8 @@
 				group_no,
 				order_no, 
 				depth, 
-				user_no)
+				user_no,
+				url)
 		VALUES (
 			(SELECT MAX(no)+1 FROM board A),
 			#{title }, 
@@ -24,7 +25,8 @@
 			(SELECT MAX(no)+1 FROM board A),
 			0, 
 			0, 
-			#{userNo })
+			#{userNo },
+			#{url })
 	</insert>
 	
 	<insert id="insertReply" parameterType="boardvo">
@@ -73,7 +75,8 @@
 		   		 DATE_FORMAT(a.reg_date,'%Y년%m월%d일 %H시%i분%S초') as regDate,
 		   		 a.group_no,
 		   		 a.order_no,
-		   		 a.depth
+		   		 a.depth,
+		   		 a.url
 			from board a, user b
 				where a.user_no = b.no
 			<if test="kwd != null and kwd != '' ">
@@ -92,7 +95,8 @@
 			group_no as groupNo,
 			order_no as orderNo,
 			depth,
-			reg_date as regDate
+			reg_date as regDate,
+			url
 		from board
 		where no = #{no }
 	</select>

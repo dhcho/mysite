@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.douzone.mysite.security.AuthUser;
 import com.douzone.mysite.service.BoardService;
+import com.douzone.mysite.service.FileUploadService;
 import com.douzone.mysite.vo.BoardVo;
 import com.douzone.mysite.vo.UserVo;
 
@@ -21,6 +23,9 @@ import com.douzone.mysite.vo.UserVo;
 public class BoardController{
 	@Autowired
 	private BoardService boardService;
+	
+	@Autowired
+	private FileUploadService fileUploadService;
 	
 	@RequestMapping("")
 	public String list(Model model) {
@@ -81,11 +86,14 @@ public class BoardController{
 	@RequestMapping(value="/write", method=RequestMethod.POST)
 	public String add(@AuthUser UserVo authUser, 
 			@RequestParam("title") String title,
-			@RequestParam("content") String contents, 
+			@RequestParam("content") String contents,
+			@RequestParam("file") MultipartFile file,
 			BoardVo vo) {
+		String url = fileUploadService.restore(file);
 		vo.setUserNo(authUser.getNo());
 		vo.setTitle(title);
 		vo.setContents(contents);
+		vo.setUrl(url);
 		boardService.addBoard(vo);
 		return "redirect:/board/";
 	}

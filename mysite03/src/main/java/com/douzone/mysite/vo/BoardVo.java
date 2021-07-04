@@ -11,6 +11,7 @@ public class BoardVo {
 	private int depth;
 	private Long userNo;
 	private String userName;
+	private String url;
 	
 	public Long getNo() {
 		return no;
@@ -72,12 +73,18 @@ public class BoardVo {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
 	
 	@Override
 	public String toString() {
 		return "BoardVo [no=" + no + ", title=" + title + ", contents=" + contents + ", regDate=" + regDate + ", hit="
 				+ hit + ", groupNo=" + groupNo + ", orderNo=" + orderNo + ", depth=" + depth + ", userNo=" + userNo
-				+ ", userName=" + userName + "]";
+				+ ", userName=" + userName + ", url=" + url + "]";
 	}
 	
 }

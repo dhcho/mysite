@@ -14,7 +14,7 @@
 		<jsp:include page="/WEB-INF/views/includes/header.jsp" />
 		<div id="content">
 			<div id="board">
-				<form class="board-form" method="post" action="${pageContext.request.contextPath }/board/write">
+				<form class="board-form" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath }/board/write">
 					<table class="tbl-ex">
 						<tr>
 							<th colspan="2">글쓰기</th>
@@ -27,6 +27,12 @@
 							<td class="label">내용</td>
 							<td>
 								<textarea id="content" name="content"></textarea>
+							</td>
+						</tr>
+						<tr>
+							<td class="label">파일</td>
+							<td>
+								<input type="file" name="file"><br/>
 							</td>
 						</tr>
 					</table>

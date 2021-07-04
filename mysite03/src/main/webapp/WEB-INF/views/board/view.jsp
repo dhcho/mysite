@@ -32,6 +32,12 @@
 							</div>
 						</td>
 					</tr>
+					<tr>
+						<td class="label">첨부파일</td>
+						<td>
+							<img src="${pageContext.request.contextPath }${listDetail.url }"/>
+						</td>
+					</tr>
 				</table>
 				<div class="bottom">
 					<a href="${pageContext.request.contextPath }/board">글목록</a>
