@@ -57,10 +57,9 @@
 		});
 	}
 	
-	$(function() {
-		$("#btn-fetch").click(function() {
-			//fetch();
-		});
+	$(function() {		
+		// 최초 데이터 가져오기
+		fetch();
 		
 		$("#add-form").submit(function(event) {
 			event.preventDefault();
@@ -186,9 +185,6 @@
 				$(".validateTips.error").hide();
 			}
 		});
-		
-		// 최초 데이터 가져오기
-		fetch();
 	});
 	
 	var lastScrollTop = 0;
