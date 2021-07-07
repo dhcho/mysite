@@ -54,4 +54,9 @@ public class GuestbookController {
 //		// 1. logging
 //		return "error/exception"; // 2. 사과 페이지 이동...
 //	}
+	
+	@RequestMapping("/spa")
+	public String spaRending() {
+		return "guestbook/spa-rending";
+	}
 }

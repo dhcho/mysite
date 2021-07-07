@@ -2,18 +2,13 @@
 @import "mysite.css";
 
 #guestbook			{ margin:20px auto;	width:540px; }
-
 #guestbook form, 
 #guestbook table	{ width:100% }
-
 #guestbook table,	
 #guestbook table td { border:1px solid #333 }
 #guestbook table td { padding:5px }
-
 #guestbook ul		{ width:100%; margin-top:20px }
 #guestbook ul li	{ width:100%; margin-top:10px }
-
-
 #guestbook.delete-form	{ height:200px }
 #guestbook.delete-form form {
 	width:300px;
