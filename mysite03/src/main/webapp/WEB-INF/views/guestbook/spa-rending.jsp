@@ -57,6 +57,19 @@
 		});
 	}
 	
+	// alert dialog
+	const valid = function(msg) {
+		$("#dialog-message").dialog({
+			title: msg,
+			modal: true,
+			buttons: {
+				"확인": function() {
+					$(this).dialog("close");
+				}
+			}
+		});
+	}
+	
 	$(function() {		
 		// 최초 데이터 가져오기
 		fetch();
@@ -70,46 +83,16 @@
 			vo.password = $("#input-password").val();
 			vo.message = $("#tx-content").val();
 			
-			//validation name
-			if(vo.name == "") {
-				// alert("이름이 비어있습니다.");
-				$("#dialog-message").dialog({
-					title: "이름이 비어있습니다.",
-					modal: true,
-					buttons: {
-						"확인": function() {
-							$(this).dialog("close");
-						}
-					}
-				});
-				return;
-			}
-			
-			//validation password
-			if(vo.password == "") {
-				$("#dialog-message").dialog({
-					title: "비밀번호가 비어있습니다.",
-					modal: true,
-					buttons: {
-						"확인": function() {
-							$(this).dialog("close");
-						}
-					}
-				});
-				return;
-			}
-			
-			//validation content
-			if(vo.message == "") {
-				$("#dialog-message").dialog({
-					title: "내용이 비어있습니다.",
-					modal: true,
-					buttons: {
-						"확인": function() {
-							$(this).dialog("close");
-						}
-					}
-				});
+			// validation
+			if(vo.name == "" || vo.password == "" || vo.message == "") {
+				if(vo.name == "") {
+					$("#dialog-message").text("이름이 비어있습니다.");
+				} else if(vo.password == "") {
+					$("#dialog-message").text("비밀번호가 비어있습니다.");
+				} else if(vo.message == "") {
+					$("#dialog-message").text("내용이 비어있습니다.");
+				}
+				valid("알림");
 				return;
 			}
 			
