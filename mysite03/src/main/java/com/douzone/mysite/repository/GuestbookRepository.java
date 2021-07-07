@@ -23,7 +23,7 @@ public class GuestbookRepository {
 		return sqlSession.selectList("guestbook.findAll");
 	}
 	
-	public List<GuestbookVo> find(Long no) {
+	public List<GuestbookVo> find(int no) {
 		return sqlSession.selectList("guestbook.find", no);
 	}
 	

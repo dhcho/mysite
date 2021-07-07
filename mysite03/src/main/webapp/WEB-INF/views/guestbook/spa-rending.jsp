@@ -36,6 +36,230 @@
 	- 삭제가 성공한 경우(no > 0), data-no=10인 li element를 삭제
 	- 참고: /ch08/test/gb/ex3
 	*/
+	
+	var fetch = function() {
+		$.ajax({
+			url: "${pageContext.request.contextPath }/guestbook/api/list",
+			dataType: "json",
+			type: "get",
+			success: function(response) {
+				response.data.forEach(function(vo) {
+					html = "<li data-no='" + vo.no + "'>" + 
+					"<strong>" + vo.name + "</strong>" +
+					"<p>" + vo.message + "</p>" +
+					"<strong></strong>" + 
+					"<a href='' data-no='" + vo.no + "'>삭제</a>" + 
+					"</li>";
+					
+					$("#list-guestbook").append(html);
+				});
+			}
+		});
+	}
+	
+	$(function() {
+		$("#btn-fetch").click(function() {
+			fetch();
+		});
+		
+		$("#add-form").submit(function(event) {
+			event.preventDefault();
+			
+			vo = {};
+			
+			vo.name = $("#input-name").val();
+			vo.password = $("#input-password").val();
+			vo.message = $("#tx-content").val();
+			
+			//validation name
+			if(vo.name == "") {
+				// alert("이름이 비어있습니다.");
+				$("#dialog-message").dialog({
+					title: "이름이 비어있습니다.",
+					modal: true,
+					buttons: {
+						"확인": function() {
+							$(this).dialog("close");
+						}
+					}
+				});
+				return;
+			}
+			
+			//validation password
+			if(vo.password == "") {
+				$("#dialog-message").dialog({
+					title: "비밀번호가 비어있습니다.",
+					modal: true,
+					buttons: {
+						"확인": function() {
+							$(this).dialog("close");
+						}
+					}
+				});
+				return;
+			}
+			
+			//validation content
+			if(vo.message == "") {
+				$("#dialog-message").dialog({
+					title: "내용이 비어있습니다.",
+					modal: true,
+					buttons: {
+						"확인": function() {
+							$(this).dialog("close");
+						}
+					}
+				});
+				return;
+			}
+			
+			// 데이터 등록
+			$.ajax({
+				url: "${pageContext.request.contextPath }/guestbook/api/add",
+				dataType: "json",
+				type: "post",
+				contentType: "application/json",
+				data: JSON.stringify(vo),
+				success: function(response) {
+					var vo = response.data;
+					
+					html = "<li data-no='" + vo.no + "'>" + 
+							"<strong>" + vo.name + "</strong>" +
+							"<p>" + vo.message + "</p>" +
+							"<strong></strong>" + 
+							"<a href='' data-no='" + vo.no + "'>삭제</a>" + 
+							"</li>";
+							
+					$("#list-guestbook").prepend(html);
+				}
+			});
+		});
+		
+		// live event: 존재하지 않는 element의 이벤트 핸들러를 미리 등록
+		// delegation(위임) -> document
+		$(document).on("click", "#list-guestbook li a", function(event){
+			event.preventDefault();
+			let no = $(this).data("no");
+			$("#hidden-no").val(no);
+			
+			deleteDialog.dialog("open");
+		});
+		
+		// 삭제 다이얼로그 만들기
+		const deleteDialog = $("#dialog-delete-form").dialog({
+			autoOpen: false,
+			width: 300,
+			height: 220,
+			modal: true,
+			buttons: {
+				"삭제": function(){
+					const no = $("#hidden-no").val();
+					const password = $("#password-delete").val();
+					$.ajax({
+						url: "${pageContext.request.contextPath }/guestbook/api/delete/"+no,
+						dataType: "json",
+						type: "post",
+						data: "password=" + password,
+						success: function(response){
+							if(response.data == -1){
+								// 비밀번호가 틀린경우
+								$(".validateTips.error").show();
+								return;
+							}						
+							
+							$("#list-guestbook li[data-no=" + response.data + "]").remove();
+							deleteDialog.dialog('close');
+						}
+					});					
+				},
+				"취소": function(){
+					$(this).dialog("close");
+				}
+			},
+			close: function(){
+				//1. password 비우기
+				$("#password-delete").val('');
+				//2. no 비우기
+				$("#hidden-no").val('');
+				//3. error message 숨기기
+				$(".validateTips.error").hide();
+			}
+		});
+		
+		// 최초 데이터 가져오기
+		fetch();
+	});
+	
+	var lastScrollTop = 0;
+	var easeEffect = 'easeInQuint';
+	
+	// 1. 스크롤 이벤트 발생
+	$(window).scroll(function(){ // ① 스크롤 이벤트 최초 발생
+		
+		var currentScrollTop = $(window).scrollTop();
+		
+		/*  
+			=================	다운 스크롤인 상태	================
+		*/
+		if( currentScrollTop - lastScrollTop > 0 ){
+			// down-scroll : 현재 게시글 다음의 글을 불러온다.
+			console.log("down-scroll");
+			
+			// 2. 현재 스크롤의 top 좌표가  > (게시글을 불러온 화면 height - 윈도우창의 height) 되는 순간
+			if ($(window).scrollTop() >= ($(document).height() - $(window).height()) ){ //② 현재스크롤의 위치가 화면의 보이는 위치보다 크다면
+	            
+				// 3. class가 scrolling인 것의 요소 중 마지막인 요소를 선택한 다음 그것의 data-no속성 값을 받아온다.
+				//		즉, 현재 뿌려진 게시글의 마지막 no값을 읽어오는 것이다.( 이 다음의 게시글들을 가져오기 위해 필요한 데이터이다.)
+				var lastNo = $("#list-guestbook li:last").attr("data-no");
+				
+				// 4. ajax를 이용하여 현재 뿌려진 게시글의 마지막 no를 서버로 보내어 그 다음 3개의 게시물 데이터를 받아온다. 
+				$.ajax({
+					type : 'post',	// 요청 method 방식 
+					url : '${pageContext.request.contextPath }/guestbook/api/listScroll',// 요청할 서버의 url
+					headers : { 
+						"Content-Type" : "application/json",
+						"X-HTTP-Method-Override" : "POST"
+					},
+					dataType : 'json', // 서버로부터 되돌려받는 데이터의 타입을 명시하는 것이다.
+					data : JSON.stringify({ // 서버로 보낼 데이터 명시 
+						no : lastNo
+					}),
+					success : function(response){// ajax 가 성공했을시에 수행될 function이다. 이 function의 파라미터는 서버로 부터 return받은 데이터이다.
+						
+						var html = "";
+						
+						// 5. 받아온 데이터가 ""이거나 null이 아닌 경우에 DOM handling을 해준다.
+						if(response != ""){
+							//6. 서버로부터 받아온 response가 list이므로 이 각각의 원소에 접근하려면 forEach문을 사용한다.
+							response.data.forEach(function(vo) {
+								// 7. 새로운 데이터를 갖고 html코드형태의 문자열을 만들어준다.
+									html +=	"<li data-no='" + vo.no + "'>" + 
+									"<strong>" + vo.name + "</strong>" +
+									"<p>" + vo.message + "</p>" +
+									"<strong></strong>" + 
+									"<a href='' data-no='" + vo.no + "'>삭제</a>" + 
+									"</li>";
+								 		
+							});// forEach
+							// 8. 위에서 만든 html을 뿌려준다.
+							$("#list-guestbook").append(html);
+						 		
+						}// if : response==null
+						else{ // 9. 만약 서버로 부터 받아온 데이터가 없으면
+							alert("더 불러올 데이터가 없습니다.");
+						}// else
+		
+					}// success
+				});// ajax
+				
+	        }//if : 현재 스크롤의 top 좌표가  > (게시글을 불러온 화면 height - 윈도우창의 height) 되는 순간
+			
+			// lastScrollTop을 현재 currentScrollTop으로 갱신해준다.
+			lastScrollTop = currentScrollTop;
+		}// 다운스크롤인 상태
+	});// scroll event
+	
 </script>
 </head>
 <body>
@@ -50,39 +274,7 @@
 					<textarea id="tx-content" placeholder="내용을 입력해 주세요."></textarea>
 					<input type="submit" value="보내기" />
 				</form>
-				<ul id="list-guestbook">
-
-					<li data-no=''>
-						<strong>지나가다가</strong>
-						<p>
-							별루입니다.<br>
-							비번:1234 -,.-
-						</p>
-						<strong></strong>
-						<a href='' data-no=''>삭제</a> 
-					</li>
-					
-					<li data-no=''>
-						<strong>둘리</strong>
-						<p>
-							안녕하세요<br>
-							홈페이지가 개 굿 입니다.
-						</p>
-						<strong></strong>
-						<a href='' data-no=''>삭제</a> 
-					</li>
-
-					<li data-no=''>
-						<strong>주인</strong>
-						<p>
-							아작스 방명록 입니다.<br>
-							테스트~
-						</p>
-						<strong></strong>
-						<a href='' data-no=''>삭제</a> 
-					</li>
-					
-									
+				<ul id="list-guestbook">		
 				</ul>
 				<div style="margin:20px 0 0 0">
 					<button id="btn-fetch">다음 가져오기</button>

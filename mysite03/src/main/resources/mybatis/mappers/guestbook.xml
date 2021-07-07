@@ -8,23 +8,25 @@
 			   message
 		  FROM guestbook
 		ORDER BY no DESC
+		LIMIT 0, 3
 	</select>
 	
-	<select id="find" resultType="guestbookvo">
+	<select id="find" parameterType="int" resultType="guestbookvo">
+		<![CDATA[
 		SELECT no, 
 			   name, 
 			   date_format(reg_date, '%Y/%m/%d %H:%i:%s') AS reg_date, 
 			   message
-		  FROM guestbook
-		<if test="no != null and no != '' ">
-		 WHERE no <![CDATA[>]]> #{no}
-		</if>
+		 FROM guestbook
+		WHERE no < #{no}
+		  AND no > #{no}-3
 		ORDER BY no DESC
 		LIMIT 0, 3
+		]]>
 	</select>
 	
 	<insert id="insert" parameterType="guestbookvo">
-		<selectKey keyProperty="no" resultType="long" order="AFTER">
+		<selectKey keyProperty="no" resultType="int" order="AFTER">
 		  	SELECT last_insert_id()
 	  	</selectKey>	
 	  	
