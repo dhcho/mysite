@@ -59,7 +59,7 @@
 	
 	$(function() {
 		$("#btn-fetch").click(function() {
-			fetch();
+			//fetch();
 		});
 		
 		$("#add-form").submit(function(event) {
@@ -212,8 +212,9 @@
 				// 3. class가 scrolling인 것의 요소 중 마지막인 요소를 선택한 다음 그것의 data-no속성 값을 받아온다.
 				//		즉, 현재 뿌려진 게시글의 마지막 no값을 읽어오는 것이다.( 이 다음의 게시글들을 가져오기 위해 필요한 데이터이다.)
 				var lastNo = $("#list-guestbook li:last").attr("data-no");
+				console.log($("#list-guestbook li:last").attr("data-no"));
 				
-				// 4. ajax를 이용하여 현재 뿌려진 게시글의 마지막 no를 서버로 보내어 그 다음 3개의 게시물 데이터를 받아온다. 
+				// 4. ajax를 이용하여 현재 뿌려진 게시글의 마지막 no를 서버로 보내어 그 다음 5개의 게시물 데이터를 받아온다. 
 				$.ajax({
 					type : 'post',	// 요청 method 방식 
 					url : '${pageContext.request.contextPath }/guestbook/api/listScroll',// 요청할 서버의 url
@@ -277,7 +278,6 @@
 				<ul id="list-guestbook">		
 				</ul>
 				<div style="margin:20px 0 0 0">
-					<button id="btn-fetch">다음 가져오기</button>
 				</div>
 			</div>
 			<div id="dialog-delete-form" title="메세지 삭제" style="display:none">

@@ -8,7 +8,7 @@
 			   message
 		  FROM guestbook
 		ORDER BY no DESC
-		LIMIT 0, 3
+		LIMIT 0, 5
 	</select>
 	
 	<select id="find" parameterType="int" resultType="guestbookvo">
@@ -19,9 +19,9 @@
 			   message
 		 FROM guestbook
 		WHERE no < #{no}
-		  AND no > #{no}-3
+		  AND no > #{no}-5
 		ORDER BY no DESC
-		LIMIT 0, 3
+		LIMIT 0, 5
 		]]>
 	</select>
 	
