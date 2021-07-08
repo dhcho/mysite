@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script type="text/javascript" src="${pageContext.request.contextPath }/assets/js/jquery/jquery-1.9.0.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="${pageContext.request.contextPath }/assets/js/ejs/ejs.js" type="text/javascript"></script>
 <script>
 	/* guestbook application based on jQuery */
 	/* 
@@ -37,13 +38,21 @@
 	- 참고: /ch08/test/gb/ex3
 	*/
 	
+	var listEJS = new EJS({
+		url: "${pageContext.request.contextPath }/assets/js/ejs/list-template.ejs"
+	});
+	
+	var listItemEJS = new EJS({
+		url: "${pageContext.request.contextPath }/assets/js/ejs/listitem-template.ejs"
+	});
+	
 	var fetch = function() {
 		$.ajax({
 			url: "${pageContext.request.contextPath }/guestbook/api/list",
 			dataType: "json",
 			type: "get",
 			success: function(response) {
-				response.data.forEach(function(vo) {
+				/* response.data.forEach(function(vo) {
 					html = "<li data-no='" + vo.no + "'>" + 
 					"<strong>" + vo.name + "</strong>" +
 					"<p>" + vo.message + "</p>" +
@@ -52,7 +61,10 @@
 					"</li>";
 					
 					$("#list-guestbook").append(html);
-				});
+				}); */
+				
+				var html = listEJS.render(response);
+				$("#list-guestbook").append(html);
 			}
 		});
 	}
@@ -104,14 +116,15 @@
 				contentType: "application/json",
 				data: JSON.stringify(vo),
 				success: function(response) {
-					var vo = response.data;
+					// var vo = response.data;
 					
-					html = "<li data-no='" + vo.no + "'>" + 
+					/* html = "<li data-no='" + vo.no + "'>" + 
 							"<strong>" + vo.name + "</strong>" +
 							"<p>" + vo.message + "</p>" +
 							"<strong></strong>" + 
 							"<a href='' data-no='" + vo.no + "'>삭제</a>" + 
-							"</li>";
+							"</li>"; */
+					var html = listItemEJS.render(response.data);
 							
 					$("#list-guestbook").prepend(html);
 				}
@@ -232,7 +245,12 @@
 		
 					}// success
 				});// ajax
+				// 여기서 class가 listToChange인 것중 가장 처음인 것을 찾아서 그 위치로 이동하자.
+				var position = $("#list-guestbook li:first").offset();// 위치 값
 				
+				// 이동  위로 부터 position.top px 위치로 스크롤 하는 것이다. 그걸 500ms 동안 애니메이션이 이루어짐.
+				$('html,body').stop().animate({scrollTop : position.top }, 600, easeEffect);
+	
 	        }//if : 현재 스크롤의 top 좌표가  > (게시글을 불러온 화면 height - 윈도우창의 height) 되는 순간
 			
 			// lastScrollTop을 현재 currentScrollTop으로 갱신해준다.
