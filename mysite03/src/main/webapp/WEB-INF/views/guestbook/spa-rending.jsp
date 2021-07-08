@@ -225,7 +225,7 @@
 						// 5. 받아온 데이터가 ""이거나 null이 아닌 경우에 DOM handling을 해준다.
 						if(response != ""){
 							//6. 서버로부터 받아온 response가 list이므로 이 각각의 원소에 접근하려면 forEach문을 사용한다.
-							response.data.forEach(function(vo) {
+							/* response.data.forEach(function(vo) {
 								// 7. 새로운 데이터를 갖고 html코드형태의 문자열을 만들어준다.
 									html +=	"<li data-no='" + vo.no + "'>" + 
 									"<strong>" + vo.name + "</strong>" +
@@ -234,7 +234,8 @@
 									"<a href='' data-no='" + vo.no + "'>삭제</a>" + 
 									"</li>";
 								 		
-							});// forEach
+							});// forEach */
+							var html = listEJS.render(response);
 							// 8. 위에서 만든 html을 뿌려준다.
 							$("#list-guestbook").append(html);
 						 		
