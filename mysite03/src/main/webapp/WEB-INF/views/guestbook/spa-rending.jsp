@@ -201,10 +201,9 @@
 			// 2. 현재 스크롤의 top 좌표가  > (게시글을 불러온 화면 height - 윈도우창의 height) 되는 순간
 			if ($(window).scrollTop() >= ($(document).height() - $(window).height()) ){ //② 현재스크롤의 위치가 화면의 보이는 위치보다 크다면
 	            
-				// 3. class가 scrolling인 것의 요소 중 마지막인 요소를 선택한 다음 그것의 data-no속성 값을 받아온다.
+				// 3. id가 list-guestbook인 것의 요소 중 마지막인 요소를 선택한 다음 그것의 data-no속성 값을 받아온다.
 				//		즉, 현재 뿌려진 게시글의 마지막 no값을 읽어오는 것이다.( 이 다음의 게시글들을 가져오기 위해 필요한 데이터이다.)
 				var lastNo = $("#list-guestbook li:last").attr("data-no");
-				console.log($("#list-guestbook li:last").attr("data-no"));
 				
 				// 4. ajax를 이용하여 현재 뿌려진 게시글의 마지막 no를 서버로 보내어 그 다음 5개의 게시물 데이터를 받아온다. 
 				$.ajax({
@@ -222,8 +221,8 @@
 						
 						var html = "";
 						
-						// 5. 받아온 데이터가 ""이거나 null이 아닌 경우에 DOM handling을 해준다.
-						if(response != ""){
+						// 5. 받아온 데이터가 null이 아닌 경우에 DOM handling을 해준다.
+						if(response.data.length != 0){
 							//6. 서버로부터 받아온 response가 list이므로 이 각각의 원소에 접근하려면 forEach문을 사용한다.
 							/* response.data.forEach(function(vo) {
 								// 7. 새로운 데이터를 갖고 html코드형태의 문자열을 만들어준다.
@@ -235,7 +234,7 @@
 									"</li>";
 								 		
 							});// forEach */
-							var html = listEJS.render(response);
+							html = listEJS.render(response);
 							// 8. 위에서 만든 html을 뿌려준다.
 							$("#list-guestbook").append(html);
 						 		
@@ -246,11 +245,11 @@
 		
 					}// success
 				});// ajax
-				// 여기서 class가 listToChange인 것중 가장 처음인 것을 찾아서 그 위치로 이동하자.
+				// 여기서 id가 listToChange인 것중 가장 처음인 것을 찾아서 그 위치로 이동하자.
 				var position = $("#list-guestbook li:first").offset();// 위치 값
 				
 				// 이동  위로 부터 position.top px 위치로 스크롤 하는 것이다. 그걸 500ms 동안 애니메이션이 이루어짐.
-				$('html,body').stop().animate({scrollTop : position.top }, 600, easeEffect);
+				$('html,body').stop().animate({scrollTop : position.top }, 500, easeEffect);
 	
 	        }//if : 현재 스크롤의 top 좌표가  > (게시글을 불러온 화면 height - 윈도우창의 height) 되는 순간
 			
