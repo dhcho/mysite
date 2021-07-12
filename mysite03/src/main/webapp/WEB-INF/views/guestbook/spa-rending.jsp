@@ -130,6 +130,8 @@
 					var html = listItemEJS.render(response.data);
 							
 					$("#list-guestbook").prepend(html);
+					
+					$("#add-form")[0].reset();
 				}
 			});
 		});
