@@ -99,10 +99,13 @@
 			if(vo.name == "" || vo.password == "" || vo.message == "") {
 				if(vo.name == "") {
 					$("#dialog-message").text("이름이 비어있습니다.");
+					$("#input-name").focus();
 				} else if(vo.password == "") {
 					$("#dialog-message").text("비밀번호가 비어있습니다.");
+					$("#input-password").focus();
 				} else if(vo.message == "") {
 					$("#dialog-message").text("내용이 비어있습니다.");
+					$("#tx-content").focus();
 				}
 				valid("알림");
 				return;
