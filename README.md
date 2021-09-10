@@ -11,7 +11,7 @@ mysite Implementation(로그인, 회원가입, 게시판, 방명록, 갤러리, 
    | --- mysite06: Spring Framework -> Spring Boot
 
 
-DB Schema
+* DB Schema
 ```
 -- webdb.author definition
 
