@@ -12,6 +12,7 @@ mysite Implementation(로그인, 회원가입, 게시판, 방명록, 갤러리, 
 
 
 DB Schema
+```
 -- webdb.author definition
 
 CREATE TABLE `author` (
@@ -119,3 +120,4 @@ CREATE TABLE `book` (
   KEY `fk_book_author` (`author_no`),
   CONSTRAINT `fk_book_author` FOREIGN KEY (`author_no`) REFERENCES `author` (`no`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+```
