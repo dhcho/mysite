@@ -1,4 +1,4 @@
-mysite Implementation(로그인, 회원가입, 게시판, 방명록, 갤러리, 관리자 페이지)
+* mysite implementation summary(로그인, 회원가입, 게시판, 방명록, 갤러리, 관리자 페이지)
 
    | --- mysite02: Model2 MVC(Servlet, JSP)
 
