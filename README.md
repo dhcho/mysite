@@ -11,7 +11,7 @@
    | --- mysite06: Spring Framework -> Spring Boot
 
 
-* DB Schema
+* DB Schema(MariaDB)
 ```
 -- webdb.author definition
 
